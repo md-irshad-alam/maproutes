@@ -88,69 +88,76 @@ const LocationForm = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 p-5 shadow-xl">
-      <form onSubmit={handleSubmit} className="space-y-4  m-auto p-4">
-        {/* Source */}
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Source"
-            value={fromQuery}
-            onChange={(e) => setFromQuery(e.target.value)}
-            className="w-full p-2 border rounded"
+    <div className="max-w-full max-h-screen mx-auto space-y-6 p-5 relative top-10 ">
+      <div className="max-w-3xl m-auto shadow-xl border-2 border-amber-900  ">
+        <h1 className=" text-center font-bold text-3xl text-blue-300 mt-2">
+          Route Finder Application
+        </h1>
+        <div className="max-w-3xl m-auto shadow-xl p-2  ">
+          <form onSubmit={handleSubmit} className="space-y-4  m-auto p-4">
+            {/* Source */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Source"
+                value={fromQuery}
+                onChange={(e) => setFromQuery(e.target.value)}
+                className="w-full p-2 border rounded"
+              />
+              {fromSuggestions.length > 0 && (
+                <ul className="absolute bg-white border max-h-40 overflow-y-auto w-full z-10">
+                  {fromSuggestions.map((place, idx) => (
+                    <li
+                      key={idx}
+                      onClick={() => handleSelect(place, "from")}
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                    >
+                      {place.display_name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Destination */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Destination"
+                value={toQuery}
+                onChange={(e) => setToQuery(e.target.value)}
+                className="w-full p-2 border rounded"
+              />
+              {toSuggestions.length > 0 && (
+                <ul className="absolute bg-white border max-h-40 overflow-y-auto w-full z-10">
+                  {toSuggestions.map((place, idx) => (
+                    <li
+                      key={idx}
+                      onClick={() => handleSelect(place, "to")}
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                    >
+                      {place.display_name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-2 bg-yellow-500 text-black rounded"
+            >
+              Submit
+            </button>
+          </form>
+
+          <RouteMap
+            origin={fromCoords}
+            destination={toCoords}
+            routeCoords={routeCoords}
           />
-          {fromSuggestions.length > 0 && (
-            <ul className="absolute bg-white border max-h-40 overflow-y-auto w-full z-10">
-              {fromSuggestions.map((place, idx) => (
-                <li
-                  key={idx}
-                  onClick={() => handleSelect(place, "from")}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                >
-                  {place.display_name}
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
-
-        {/* Destination */}
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Destination"
-            value={toQuery}
-            onChange={(e) => setToQuery(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-          {toSuggestions.length > 0 && (
-            <ul className="absolute bg-white border max-h-40 overflow-y-auto w-full z-10">
-              {toSuggestions.map((place, idx) => (
-                <li
-                  key={idx}
-                  onClick={() => handleSelect(place, "to")}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                >
-                  {place.display_name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className="w-full py-2 bg-yellow-500 text-black rounded"
-        >
-          Submit
-        </button>
-      </form>
-
-      <RouteMap
-        origin={fromCoords}
-        destination={toCoords}
-        routeCoords={routeCoords}
-      />
+      </div>
     </div>
   );
 };
