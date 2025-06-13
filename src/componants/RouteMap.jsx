@@ -7,7 +7,11 @@ import {
   Polyline,
   useMap,
 } from "react-leaflet";
-
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
+import iconUrl from "leaflet/dist/images/marker-icon.png";
+import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 const FlyToLocation = ({ lat, lng }) => {
   const map = useMap();
   useEffect(() => {
@@ -17,6 +21,13 @@ const FlyToLocation = ({ lat, lng }) => {
   }, [lat, lng, map]);
   return null;
 };
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: iconRetinaUrl,
+  iconUrl: iconUrl,
+  shadowUrl: shadowUrl,
+});
 
 const RouteMap = ({ origin, destination, routeCoords }) => {
   const mapRef = useRef(null);
