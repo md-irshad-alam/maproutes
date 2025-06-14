@@ -12,7 +12,7 @@ export default function AuthPage() {
     password: "",
   });
   const [message, setMessage] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setInputChange({ ...inputChange, [name]: value });
@@ -21,35 +21,39 @@ export default function AuthPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!isLogin) {
+      setLoading(true);
       apiclient
         .post("/auth/register", inputChange)
         .then((res) => {
           window.alert("registration successfull");
           setisLogin(true);
+          setLoading(false);
         })
         .catch((error) => {
           console.log(error);
           window.alert(error.response.data.message);
           setisLogin(true);
+          setLoading(false);
         });
     }
     if (isLogin) {
+      setLoading(true);
       apiclient
         .post("/auth/login", inputChange)
         .then((res) => {
           window.alert("Login successfull");
+          setLoading(false);
           const expiryTime = new Date().getTime() + 60 * 60 * 1000; // 1 hour in milliseconds
           sessionStorage.setItem("expiry", expiryTime);
           sessionStorage.setItem("token", res.data.token);
           navigate("/");
         })
         .catch((error) => {
+          setLoading(false);
           window.alert(error.response.data.message);
         });
     }
   };
-
-  const [loading, setLoading] = useState(false);
 
   return (
     <main className="flex min-h-screen font-sans">
